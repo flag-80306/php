@@ -26,13 +26,7 @@ class CityService
         $db_result = $this->connection->query("SELECT * FROM `city`");
         $results = array();
         while ($row = $db_result->fetch_array()) {
-            $city = new City(
-                $row["ID"],
-                $row["Name"],
-                $row["CountryCode"],
-                $row["District"],
-                $row["Population"]
-            );
+            $city = $this->rowToCity($row);
             array_push($results, $city);
         }
         $db_result->free_result();
@@ -47,13 +41,7 @@ class CityService
         $db_result = $statement->get_result();
 
         $row = $db_result->fetch_array();
-        $city = new City(
-            $row["ID"],
-            $row["Name"],
-            $row["CountryCode"],
-            $row["District"],
-            $row["Population"]
-        );
+        $city = $this->rowToCity($row);
         $db_result->free_result();
         return $city;
     }
@@ -67,16 +55,42 @@ class CityService
 
         $results = array();
         while ($row = $db_result->fetch_array()) {
-            $city = new City(
-                $row["ID"],
-                $row["Name"],
-                $row["CountryCode"],
-                $row["District"],
-                $row["Population"]
-            );
+            $city = $this->rowToCity($row);
             array_push($results, $city);
         }
         $db_result->free_result();
         return $results;
+    }
+
+    function getCitiesBySearchString($search)
+    {
+        if (strlen($search) > 0) {
+            $search = "%$search%";
+        }
+
+        $statement = $this->connection->prepare("SELECT * FROM `city` WHERE `Name` LIKE ?");
+        $statement->bind_param("s", $search);
+        $statement->execute();
+        $db_result = $statement->get_result();
+
+        $results = array();
+        while ($row = $db_result->fetch_array()) {
+            $city = $this->rowToCity($row);
+            array_push($results, $city);
+        }
+        $db_result->free_result();
+        return $results;
+    }
+
+    private function rowToCity($row)
+    {
+        $city = new City(
+            $row["ID"],
+            $row["Name"],
+            $row["CountryCode"],
+            $row["District"],
+            $row["Population"]
+        );
+        return $city;
     }
 }
