@@ -14,9 +14,16 @@
     use Services\CityService;
 
     $cityId = isset($_GET["id"]) ? $_GET["id"] : 1;
+    $random = isset($_GET["random"]) ? true : false;
+
 
     $cs = new CityService();
-    $city = $cs->getCityById($cityId);
+    if ($random) {
+        $city = $cs->getRandomCity();
+    } else {
+        $city = $cs->getCityById($cityId);
+    }
+
 
 
     echo "ID: " . $city->getId() . "<br>";

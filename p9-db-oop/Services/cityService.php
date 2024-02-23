@@ -46,6 +46,18 @@ class CityService
         return $city;
     }
 
+    function getRandomCity()
+    {
+        $statement = $this->connection->prepare("SELECT * FROM city ORDER BY rand() LIMIT 1");
+        $statement->execute();
+        $db_result = $statement->get_result();
+
+        $row = $db_result->fetch_array();
+        $city = $this->rowToCity($row);
+        $db_result->free_result();
+        return $city;
+    }
+
     function getCitiesByCountryCode($country)
     {
         $statement = $this->connection->prepare("SELECT * FROM `city` WHERE `CountryCode` = ?");
