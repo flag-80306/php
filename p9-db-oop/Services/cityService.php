@@ -94,6 +94,13 @@ class CityService
         return $results;
     }
 
+    function deleteCity($id)
+    {
+        $statement = $this->connection->prepare("DELETE FROM `city` WHERE `Id` = ?");
+        $statement->bind_param("i", $id);
+        $statement->execute();
+    }
+
     private function rowToCity($row)
     {
         $city = new City(
