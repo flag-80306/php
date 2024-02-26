@@ -24,8 +24,6 @@
         $city = $cs->getCityById($cityId);
     }
 
-
-
     echo "ID: " . $city->getId() . "<br>";
     echo "Name: " . $city->getName() . "<br>";
     echo "District: " . $city->getDistrict() . "<br>";
