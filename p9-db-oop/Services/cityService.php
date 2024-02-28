@@ -94,6 +94,30 @@ class CityService
         return $results;
     }
 
+    function addCity($name, $countryCode, $district, $population)
+    {
+        $sql = "
+        INSERT INTO city
+        (Name, CountryCode, District, Population)
+        VALUES
+        (?, ?, ?, ?);
+        ";
+        $statement = $this->connection->prepare($sql);
+        $statement->bind_param("sssi", $name, $countryCode, $district, $population);
+
+        $statement->execute();
+
+        $addedCity = new City(
+            $statement->insert_id,
+            $name,
+            $countryCode,
+            $district,
+            $population
+        );
+
+        return $addedCity;
+    }
+
     function deleteCity($id)
     {
         $statement = $this->connection->prepare("DELETE FROM `city` WHERE `Id` = ?");
