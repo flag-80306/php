@@ -62,7 +62,7 @@
                 echo "</td>";
                 echo "<td>";
                 // echo "<a href='?countryCode=" . $city->getCountryCode() . "&deleteCityId=" . $city->getId() . "'>Apagar</a>";
-                echo "<button>✏️</button>";
+                echo "<a href='edit_city_form.php?cityId=" . $city->getId() . "'>✏️</a> | ";
                 echo "<button
                         class='deleteButton'
                         data-country-code=" . $city->getCountryCode() . "

@@ -118,6 +118,37 @@ class CityService
         return $addedCity;
     }
 
+    function updateCity($city)
+    {
+        $sql = "
+        UPDATE `city`
+        SET
+            `Name` = ?,
+            `CountryCode` = ?,
+            `District` = ?,
+            `Population` = ?
+        WHERE `ID` = ?
+        ";
+
+        $name = $city->getName();
+        $countryCode = $city->getCountryCode();
+        $district = $city->getDistrict();
+        $population = $city->getPopulation();
+        $cityId = $city->getId();
+
+        $statement = $this->connection->prepare($sql);
+        $statement->bind_param(
+            "sssii",
+            $name,
+            $countryCode,
+            $district,
+            $population,
+            $cityId
+        );
+
+        $statement->execute();
+    }
+
     function deleteCity($id)
     {
         $statement = $this->connection->prepare("DELETE FROM `city` WHERE `Id` = ?");
